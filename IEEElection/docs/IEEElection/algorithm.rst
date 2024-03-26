@@ -42,7 +42,7 @@ An example distributed algorithm for finding a leader/isochronous resource manag
         MessageNeighboor,
         OnMessageFromNeighboor,
         OnReceivingAcknowledgementMessageFromNeighboor,
-        OnReceivingParentageMessageFromNeighboor,
+        OnReceivingParentageRequstFromNeighboor,
     Needs: 
         adjacent_nodes_set: ans,
         my_node_id: my_node_id
@@ -67,14 +67,14 @@ An example distributed algorithm for finding a leader/isochronous resource manag
         If message is 'acknowledgement':
             OnReceivingAcknowledgementMessageFromNeighboor(x)
         Else If message is 'parentage request':
-            OnReceivingParentageMessageFromNeighboor(x)
+            OnReceivingParentageRequstFromNeighboor(x)
     
     OnReceivingAcknowledgementMessageFromNeighboor: (x) do
         remove_timer(x)
         message_queue_set.remove(x)
         parent = x # lifecycle of this node ends
 
-    OnReceivingParentageMessageFromNeighboor: (x) do
+    OnReceivingParentageRequstFromNeighboor: (x) do
         neighboor_is_the_father = False
         If parent == x:  # parent chosen as x before thus contention
             neighboor_is_the_father = True
