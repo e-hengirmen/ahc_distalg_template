@@ -1,2 +1,2 @@
-.. |Awerbuch| replace:: Distributed Algorithm Name 
+.. |Awerbuch| replace:: Sych: Awerbuch’s synchronizer (alpha, beta, gamma)
 
