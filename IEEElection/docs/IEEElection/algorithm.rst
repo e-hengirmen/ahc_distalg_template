@@ -108,15 +108,22 @@ Example
 Correctness
 ~~~~~~~~~~~
 
+
+- Requirements:
+  - We know that for a graph to be fully connected there must be at least N-1 edges. Since an edgeless graph can have 1 connected component. And every edge can add 1 component to that graph.
+  - Assume that there are N-1 edges and N nodes in a fully connected graph. Since we know that every edge added one node we know that it is acyclic.
+  - In a connected graph if u add 1 edge from 1 node to another that will create a cycle thus it should have exactly N-1 edges to be acyclic
+- Knowing above requirements if a graph has no non leaf nodes it means that it has at least 2N edges which will surely make it cyclic thus contradiction
 - Since it is not cyclic some of the nodes has to be leafs.
 - Only leafs sends request to possible parents.
 - When a node chooses its parent(it has to be acknowledged) it is eliminated from this process.
 - After every elimination there are 3 cases:
   - Either there are at least one previous leaf remaining(in this case at least one of these chooses its parents)
   - There is no previous leaf remaining but since these leaf nodes are removed from our calculation new leafs are created
-  - It was a leaf
+  - Parent chosen process ends
 
-Complexity 
+because of above reasons this algorithm is correct
+
 ~~~~~~~~~~
 
 Present theoretic complexity results in terms of number of messages and computational complexity.
