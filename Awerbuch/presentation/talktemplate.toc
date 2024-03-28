@@ -1,0 +1,15 @@
+\babel@toc {english}{}\relax 
+\beamer@sectionintoc {1}{The Problem}{3}{0}{1}
+\beamer@sectionintoc {2}{The Contribution}{5}{0}{2}
+\beamer@sectionintoc {3}{Motivation/Importance}{7}{0}{3}
+\beamer@sectionintoc {4}{Background/Model/Definitions/Previous Works}{10}{0}{4}
+\beamer@subsectionintoc {4}{1}{Model, Definitions}{11}{0}{4}
+\beamer@subsectionintoc {4}{2}{Background, Previous Works}{12}{0}{4}
+\beamer@sectionintoc {5}{Contribution}{13}{0}{5}
+\beamer@sectionintoc {6}{Experimental results/Proofs}{19}{0}{6}
+\beamer@subsectionintoc {6}{1}{Main Result Alpha}{20}{0}{6}
+\beamer@subsectionintoc {6}{2}{Main Result Beta}{21}{0}{6}
+\beamer@subsectionintoc {6}{3}{Main Result Gamma-1}{22}{0}{6}
+\beamer@subsectionintoc {6}{4}{Main Result Gamma-2}{23}{0}{6}
+\beamer@subsectionintoc {6}{5}{Main Result Gamma-3}{24}{0}{6}
+\beamer@sectionintoc {7}{Conclusions}{25}{0}{7}

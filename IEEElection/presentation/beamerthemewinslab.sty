@@ -6,14 +6,10 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iflanguage{turkish}
-{
-\institute[WINSLab]{Telsiz Sistemler, Ağlar ve Siber Güvenlik Laboratuvarı\\Bilgisayar Mühendisliği Bölümü\\Orta Doğu Teknik Üniversitesi\\Ankara} 
-}{}
-\iflanguage{english}
-{
+
+
 \institute[WINSLab]{Wireless Systems, Networks and Cybersecurity Laboratory\\Department of Computer Engineering\\Middle East Technical University\\Ankara Turkey} 
-}{}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mode<presentation>
 \useinnertheme{winslab}
@@ -73,15 +69,6 @@
     \note{Lecture~\thepart:~\beamer@partname}
 \end{frame}
 }
-
-
-\iflanguage{turkish}
-{
-\patchcmd{\beamer@sectionintoc}{\vskip1.5em}{\vskip0em}{}{}
-\AtBeginSection[]{%
-  \begin{frame}\frametitle{Kapsam}\begin{minipage}{\textwidth}\tableofcontents[currentsection,hideallsubsections]\end{minipage}\note{\tableofcontents[currentsection,hideallsubsections]}\end{frame}}
-}{}
-
 
 \iflanguage{english}
 {

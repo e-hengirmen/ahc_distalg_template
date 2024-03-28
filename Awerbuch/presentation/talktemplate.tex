@@ -35,7 +35,7 @@
 \def\false{\textbf{F}}
 
 
-\author[John Doe]{John Doe\\\href{mailto:john@example.com}{john@example.com}}
+\author[Ersel Hengirmen]{Ersel Hengirmen\\\href{mailto:ehengirmen@hotmail.com}{ehengirmen@hotmail.com}}
 %\author[J.\,Doe \& J.\,Doe]
 %{%
 %  \texorpdfstring{
@@ -53,12 +53,11 @@
 %  {John Doe \& Jane Doe}
 %}
 
-\title[WINS Beamer Template]{WINS Lab Beamer Presentation Template}
-\subtitle[Short SubTitle]{How to Prepare a Nice Presentation}
+\title[WINS Beamer Template]{AWERBUCH’S SYNCHRONIZERS (ALPHA, BETA, GAMMA)}
 %\date{} 
 
 \begin{document}
-
+	
 \begin{frame}[plain]
 \titlepage
 \note{In this talk, I will present .... Please answer the following questions:
@@ -97,37 +96,32 @@
 %\end{frame}
 
 \begin{frame}{The problem}
-\framesubtitle{Tell a \alert{STORY} from the background to the conclusion}
-\begin{block}{The Problem Name} 
-Explain the problem here. Instead of using the term `The problem'', please use specific name for the problem. Tell us a story. Provide a picture for the scenario depicting the problem. Set the scene for average audience.
-\end{block}
-Spend at least \textbf{1.5-2 minutes per slide} on average.
-
-The introduction should be something like ``I will be presenting title of talk. This is joint work with your colleagues or advisor at institution.'' 
-\note{}
+	\begin{block}{Synchronization} 
+		Synchronization in distributed systems is crucial for maintaining coherence and ensuring consistent behavior across processes, especially in transitioning from synchronous to asynchronous environments. 
+	\end{block}
+	\note{}
 \end{frame}
 
 \section{The Contribution}
 \begin{frame}
-\frametitle{What is the solution/contribution}
-\framesubtitle{}
-Explain \textbf{YOUR} contributions. Go top-down. Give the brief introduction to the contributions at the beginning of the presentation. A slide should have no more than five to six lines of text or bullets. Prefer figures instead of text: A picture is worth a thousand words.
-\begin{itemize}
-\item Communicate the Key Ideas
-\item Don’t get Bogged Down in Details
-\item Use a Top-down Approach
-\end{itemize}
-
-The audience will remember at most one single message \textbf{Which message you want to audience to remember? Can you express this message in less than a minute in an elevator?}
-
+	\frametitle{What is the solution/contribution}
+	\framesubtitle{}
+	\begin{itemize}
+		\item Implementation of Alpha, Beta, Gamma Algorithms on the AHCv2 platform.
+		\item Anlysis of the algorithms within different topologies
+	\end{itemize}
 \end{frame}
 
 
 \section{Motivation/Importance}
 \begin{frame}
-\frametitle{Motivation/Importance}
-\framesubtitle{``Gain upon solving the problem, pain if not solved'' should be explained}
-Explain why the problem is so important. Throw in a little philosophy if necessary. How does the problem fit into the larger picture? If it involves a model of a real-world phenomenon, then how good is the model? What are its applications? What makes the problem nontrivial? You can return to these issues in the Conclusion, when you can re-address them with the benefit of hindsight.
+	\frametitle{Motivation/Importance-1}
+	These synchronizers play a pivotal role in distributed systems by enabling coordination and consistency among processes operating in asynchronous environments. Their importance lies in their ability to bridge the gap between synchronous and asynchronous systems, allowing distributed applications to maintain coherence and achieve desired outcomes despite the lack of a global clock or fixed time intervals.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Motivation/Importance-2}
+	Without effective synchronizers, distributed systems would struggle to ensure consistent behavior, leading to potential issues such as data inconsistencies, race conditions, and overall system instability. Therefore, these synchronizers serve as fundamental building blocks for the reliable and efficient operation of distributed systems in various domains, including cloud computing, networking, and parallel computing.
 \end{frame}
 
 \section{Background/Model/Definitions/Previous Works}
@@ -136,128 +130,129 @@ Explain why the problem is so important. Throw in a little philosophy if necessa
 \subsection{Model, Definitions}
 
 \frame{
-\frametitle{Model, Definitions}
-\framesubtitle{Formal definition of a Stochastic Process}
-The use of terminology and jargon should be kept to a minimum, but is impossible to avoid entirely. All terms must be introduced early. It is also useful to remind the audience of the definitions at critical points later in the talk.
-
-Background and this slide can be combined....
+	\frametitle{Model, Definitions}
+	\begin{itemize}
+		\item Synchronization: The process of coordinating actions or events across distributed entities to maintain coherence and consistency.
+		\item Asynchronous Systems: Distributed systems where processes operate independently without a global clock or fixed time intervals.
+	\end{itemize} 
+	Background and this slide can be combined....
 }
 
 \subsection{Background, Previous Works}
 \begin{frame}{Background}
-Research is not usually carried out in a vacuum. There will almost always be other relevant or related work, which you should describe. Present an orderly synopsis of these previously- obtained results. A table is often used for this purpose. Be sure to mention the author of each paper and its date of publication. \textbf{Compare and contrast them with each other and with your paper.}
+	The 1985 paper Awerbuch "Complexity of network synchronization" proposes the method for alpha beta gamma synchronizers(without naming them as alpha beta gamma) and analyzes the trade-offs between them in this paper. So in essence its a paper that introduces simple methodologies for designing efficient distributed algorithms in asynchronous networks.
+	
 \end{frame}
 
 
 
 
 \section{Contribution}
-\subsection{Main Point 1}
-\begin{frame}{Main Point 1: A Figure}
-\framesubtitle{Abstract the Major Results}
-Describe the key results of the paper. You may present the statements of the major theorems, but not their proofs. You will probably have to get a little technical here, but do so gradually and carefully.
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.5]{figures/Chick1.png}
-    \caption{Awesome Image}
-    \label{fig:awesome_image}
-\end{figure}
-\note{
-}
-\end{frame}
-
-
-\subsection{Main Point 2}
 
 \begin{frame}
-\frametitle{An Example Distributed Algorithm}
-\framesubtitle{Blind Flooding}
-
-
-Blind flooding on an undirected graph is presented in Algorithm~\ref{alg:blindflooding}.
-
-\begin{center}
-\begin{algorithm}[H]
-	\scriptsize
-	\def\algorithmlabel{BlindFlooding}
-    \caption{\algorithmlabel\ algorithm}
-    \label{alg:blindflooding}
-    \begin{algorithmic}[1]
-    	\Implement {\algorithmlabel}{cf} 
-    	\Use {LinkLayerBroadcast} {lbc} 
-    	\Events{Init, MessageFromTop, MessageFromBottom}
-	\Need {}
-
-        \Event {Init}{}
-        		
-        \Event{MessageFromBottom} { $m$ }
-        		\Trig{lbc}{Broadcast} { $m$  }
-        		
-        \Event{MessageFromTop} { $m$ }	
-        		\Trig{lbc}{Broadcast} { $m$  }
-    \end{algorithmic}
-\end{algorithm}
-\end{center}
-
-
+	\frametitle{Alpha}
+	
+	\begin{itemize}
+		\item In the alpha synchronizer, every node sends a message to every neighbor in every round(so that neighboor can synchronize with it)
+		\begin{itemize}
+			\item If no message needs to be sent to that neighboor, node sends a dummy message to that neighboor.
+		\end{itemize}
+		\item The receiver waits until it receives a message from every neighbor for a particular round before proceeding to the next round.
+	\end{itemize}
+	
 \end{frame}
 
 \begin{frame}
-\frametitle{Main Point 2}
-\framesubtitle{Explain the Significance of the Results}
-Pause, and explain the relationships between the formal theorems that you have just presented and the informal description that you gave in the Introduction. Make it clear to the audience that the results do live up to the advance publicity. If the statements of the theorems are very technical then this may take some time. It is time well-spent.
-
+	\frametitle{Alpha Algorithm}
+	
+	\begin{center}
+		\begin{figure}
+			\centering
+			\includegraphics[scale=0.2]{figures/alpha.png}
+		\end{figure}
+	\end{center}
+	
 \end{frame}
 
-\subsection{Main Point 3}
 \begin{frame}
-\frametitle{Main Point 3}
-\framesubtitle{Sketch a Proof of the Crucial Results}
-The emphasis is on the word ``sketch''. Give a very high-level description of the proofs, emphasizing the proof structure and the proof techniques used. If the proofs have no structure (in which case it may be assumed that you are not the author of the paper), then you must impose one on them. Gloss over the technical details. It is a good idea to point them out but not to explore them.
+	\frametitle{Beta}
+	\begin{itemize}
+		\item In the beta synchronizer, messages sent by processes are acknowledged by their receivers.
+		\item Senders wait until they receive acknowledgments (ACKs) from all receivers for the messages they sent in a particular round.
+		\begin{itemize}
+			\item That is why since its a reliable connection we act like receive happens only ones(think of TCP)
+		\end{itemize}
+		\item Once all ACKs are received and all OKs from child nodes are received, the node sends ok to parent node.
+		\item Once root receives OK from its parent nodes it broadcasts GO signifying the start of new round
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Beta Algorithm}
+	
+	\begin{center}
+		\begin{figure}
+			\centering
+			\includegraphics[scale=0.2]{figures/beta.png}
+			\caption{}
+			\label{fig:awesome_image}
+		\end{figure}
+	\end{center}
+	
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Gamma}
+	\begin{itemize}
+		\item The gamma synchronizer is the merge of both alpha and beta synchronizers. It does this by having multiple roots which all have their own spanning trees where:
+		\begin{itemize}
+			\item The beta algorithm runs within each tree 
+			\item The alpha algorithm runs between trees
+		\end{itemize}
+		\item In here in addition to beta when the root of a tree gets all acks and OKs, it sends ready to the roots of all adjacent trees (and itself).
+		\begin{itemize}
+			\item Two trees are considered to be adjacent when any of their members are adjacent.
+		\end{itemize}
+		\item When the root is READY(which means every one of its descendants are OK). And all their adjacent nodes are READY(which it knows by receiving their message). It broadcasts go down its tree
+		
+	\end{itemize}
 \end{frame}
 
 
 \section{Experimental results/Proofs}
 
-\subsection{Main Result 1}
+\subsection{Main Result Alpha}
 \begin{frame}
-\frametitle{Main Result 1}
-\framesubtitle{}
-Choose \textbf{just the key results}. They should be important, non-trivial, should give the flavour of the rest of the technical details and should be presentable in a relatively short period of time. Use figures instead of tables instead of text.
-
-Better to present 10\% the entire audience gets than 90\% nobody gets
+	\frametitle{Main Result Alpha}
+	Alpha: guarantees local synchronization, ensuring that no process proceeds to the next round since it waits for all its neighboors which means it knows every neighboor finished its previous message neighbors have completed the current round.
 \end{frame}
 
-
-\subsection{Main Result 2}
+\subsection{Main Result Beta}
 \begin{frame}
-\frametitle{Main Result 2}
-\framesubtitle{Try a subtitle}
-\begin{itemize}
-\item Make sure your notation is clear and consistent throughout the talk. Prepare a slide that explains the notation in detail, in case that is needed or if somebody asks.
-\item Always label all of your axes on graphs; use short but helpful captions on figures and tables. It is also very useful to have an arrow on the side which clearly shows which direction is considered better (e.g., "up is better").
-\item If you have experimental results, make sure you clearly present the experimental paradigm you used, and the details of your methods, including the number of trials, the specific analysis tools you applied, significance testing, etc.
-\item The talk should contain at least a brief discussion of the limitations and weaknesses of the presented approach or results, in addition to their strengths. This, however, should be done in an objective manner -- don't enthusiastically put down your own work.
-\end{itemize}
+	\frametitle{Main Result Beta}
+	guarantees global synchronization, ensuring that no process proceeds to the next round since everyone waits for root and root waits for OKs from its children And since its children being OK would recursively prove that every other node is OK this algorithm is correct.
 \end{frame}
 
-
-\subsection{Main Result 3}
+\subsection{Main Result Gamma-1}
 \begin{frame}
-\frametitle{Main Result 3}
-\framesubtitle{}
-\begin{itemize}
-\item If time allows, the results should be compared to the most related work in the field. You should at least prepare one slide with a summary of the related work, even if you do not get a chance to discuss it. This will be helpful if someone asks about it, and will demonstrate your mastery of the material.
-\item Spell check again.
-\item Give for each of the x-axis, y-axis, and z-axis
-\item Label, unit, scale (if log scale)
-\item Give the legend
-\item Explain all symbols
-\item Take an example to illustrate a specific point in the figure
-\end{itemize}
+	\frametitle{Main Result Gamma-1}
+	As in the alpha synchronizer, we can show that no root process to the next round unless it and all its neighbors are in ready state, which happens only after both all nodes in the root's tree and all their neighbors have received acks for all messages. This proves that within nodes there is local syncronization.
 \end{frame}
 
+\subsection{Main Result Gamma-2}
+\begin{frame}
+	\frametitle{Main Result Gamma-2}
+	And since every tree uses beta syncronizer in itself we can see that within that tree networkwise syncronization has been achieved.
+	
+\end{frame}
+
+\subsection{Main Result Gamma-3}
+\begin{frame}
+	\frametitle{Main Result Gamma-3}
+	Since every connection of a node inside 1 tree to another implies connection between roots the syncronization of roots will be achieved. While this sentence does not prove its correctnes, the idea of thinking every tree as a giant node will since it will make the situation same as a normal alpha synchronizer.
+\end{frame}
 
 
 \section{Conclusions}

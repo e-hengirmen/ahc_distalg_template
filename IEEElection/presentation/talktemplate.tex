@@ -35,7 +35,7 @@
 \def\false{\textbf{F}}
 
 
-\author[John Doe]{John Doe\\\href{mailto:john@example.com}{john@example.com}}
+\author[Ersel Hengirmen]{Ersel Hengirmen\\\href{mailto:ehengirmen@hotmail.com}{ehengirmen@hotmail.com}}
 %\author[J.\,Doe \& J.\,Doe]
 %{%
 %  \texorpdfstring{
@@ -53,8 +53,7 @@
 %  {John Doe \& Jane Doe}
 %}
 
-\title[WINS Beamer Template]{WINS Lab Beamer Presentation Template}
-\subtitle[Short SubTitle]{How to Prepare a Nice Presentation}
+\title[WINS Beamer Template]{Leader Election in IEEE 1394}
 %\date{} 
 
 \begin{document}
@@ -97,165 +96,137 @@
 %\end{frame}
 
 \begin{frame}{The problem}
-\framesubtitle{Tell a \alert{STORY} from the background to the conclusion}
-\begin{block}{The Problem Name} 
-Explain the problem here. Instead of using the term `The problem'', please use specific name for the problem. Tell us a story. Provide a picture for the scenario depicting the problem. Set the scene for average audience.
-\end{block}
-Spend at least \textbf{1.5-2 minutes per slide} on average.
-
-The introduction should be something like ``I will be presenting title of talk. This is joint work with your colleagues or advisor at institution.'' 
-\note{}
+    \begin{block}{Leader Election} 
+        IEEE 1394, also known as FireWire is a standard for high-speed serial bus comminication.
+        It is commonly used in audio and video equipment.
+        In such networks devices are hot-pluggable, meaning they can be added or removed at any time without disrupting the system's operation.
+        However, such changes trigger a bus reset, and after the reset, all nodes within the network are restored to an equal status, requiring a new leader to be elected dynamically.
+    \end{block}
 \end{frame}
 
 \section{The Contribution}
 \begin{frame}
 \frametitle{What is the solution/contribution}
-\framesubtitle{}
-Explain \textbf{YOUR} contributions. Go top-down. Give the brief introduction to the contributions at the beginning of the presentation. A slide should have no more than five to six lines of text or bullets. Prefer figures instead of text: A picture is worth a thousand words.
-\begin{itemize}
-\item Communicate the Key Ideas
-\item Don’t get Bogged Down in Details
-\item Use a Top-down Approach
-\end{itemize}
-
-The audience will remember at most one single message \textbf{Which message you want to audience to remember? Can you express this message in less than a minute in an elevator?}
-
+    \framesubtitle{}
+	\begin{itemize}
+		\item Implementation of Leader Election Algorithm on the AHCv2 platform.
+		\item Anlysis of the algorithms within different topologies
+	\end{itemize}
 \end{frame}
 
 
 \section{Motivation/Importance}
 \begin{frame}
-\frametitle{Motivation/Importance}
-\framesubtitle{``Gain upon solving the problem, pain if not solved'' should be explained}
-Explain why the problem is so important. Throw in a little philosophy if necessary. How does the problem fit into the larger picture? If it involves a model of a real-world phenomenon, then how good is the model? What are its applications? What makes the problem nontrivial? You can return to these issues in the Conclusion, when you can re-address them with the benefit of hindsight.
+\frametitle{Motivation/Importance - 1}
+The bus resets that happen after an audio or video plug-in can be disruptive, causing interruptions in the system's operation. Think as when you are on your computer watching a video you unplug your headphone and your system freezes for 3-4 seconds. That is not a situation anyone wants. 
+\end{frame}
+\begin{frame}
+\frametitle{Motivation/Importance - 2}
+The IEEE 1394 leader election protocol dynamically assigns leadership status after bus resets, the protocol creates uninterrupted communication and coordination among interconnected devices. This is crucial for the seamless exchange of digitized video and audio signals in various electronic devices.
 \end{frame}
 
-\section{Background/Model/Definitions/Previous Works}
 
 
-\subsection{Model, Definitions}
-
-\frame{
-\frametitle{Model, Definitions}
-\framesubtitle{Formal definition of a Stochastic Process}
-The use of terminology and jargon should be kept to a minimum, but is impossible to avoid entirely. All terms must be introduced early. It is also useful to remind the audience of the definitions at critical points later in the talk.
-
-Background and this slide can be combined....
-}
+\section{Background/Previous Works}
 
 \subsection{Background, Previous Works}
-\begin{frame}{Background}
-Research is not usually carried out in a vacuum. There will almost always be other relevant or related work, which you should describe. Present an orderly synopsis of these previously- obtained results. A table is often used for this purpose. Be sure to mention the author of each paper and its date of publication. \textbf{Compare and contrast them with each other and with your paper.}
+\begin{frame}{Background-1}
+	The IEEE 1394 standard mentions about the problem under the concept of isochronous resource manager (IRM) selection.
+	It also provides examples of processes for selecting the IRM within a backplane environment.
+	However, it doesn't go into the algorithmic details of how the selection process should be implemented.
+\end{frame}
+\begin{frame}{Background-2}
+	Additionally, Devillers et al., formalizes a simple algorithm for this IEEE standard protocol.
+	This paper addresses ambiguities and challenges encountered during the process.
+	The authors of the paperesspecially focuses on the tree identify phase.
+	This paper serves as formal verification of this distributed algorithm. We will also use their method in our implementation.
 \end{frame}
 
 
 
 
 \section{Contribution}
-\subsection{Main Point 1}
-\begin{frame}{Main Point 1: A Figure}
-\framesubtitle{Abstract the Major Results}
-Describe the key results of the paper. You may present the statements of the major theorems, but not their proofs. You will probably have to get a little technical here, but do so gradually and carefully.
+\begin{frame}
+	\frametitle{Protocol}
+    The protocol operates in a decentralized manner where nodes in the network coordinate to form a tree structure. When a node has received a parent request from all but one of its neighbors it sends a parent request to its remaining neighbor. If a node has received parent requests from all its neighbors, it
+    knows that it is has been elected as the root of the tree. There are 3 main states for every node of the algorihtm
+\end{frame}
 
+
+\subsection{Algorithm}
+
+\begin{frame}
+\frametitle{Algorithm-1}
+\framesubtitle{Leader Election in IEEE 1394}
 \begin{figure}
     \centering
-    \includegraphics[scale=0.5]{figures/Chick1.png}
-    \caption{Awesome Image}
-    \label{fig:awesome_image}
+    \includegraphics[scale=0.4]{figures/IEEE-1.png}
 \end{figure}
-\note{
-}
-\end{frame}
-
-
-\subsection{Main Point 2}
-
-\begin{frame}
-\frametitle{An Example Distributed Algorithm}
-\framesubtitle{Blind Flooding}
-
-
-Blind flooding on an undirected graph is presented in Algorithm~\ref{alg:blindflooding}.
-
-\begin{center}
-\begin{algorithm}[H]
-	\scriptsize
-	\def\algorithmlabel{BlindFlooding}
-    \caption{\algorithmlabel\ algorithm}
-    \label{alg:blindflooding}
-    \begin{algorithmic}[1]
-    	\Implement {\algorithmlabel}{cf} 
-    	\Use {LinkLayerBroadcast} {lbc} 
-    	\Events{Init, MessageFromTop, MessageFromBottom}
-	\Need {}
-
-        \Event {Init}{}
-        		
-        \Event{MessageFromBottom} { $m$ }
-        		\Trig{lbc}{Broadcast} { $m$  }
-        		
-        \Event{MessageFromTop} { $m$ }	
-        		\Trig{lbc}{Broadcast} { $m$  }
-    \end{algorithmic}
-\end{algorithm}
-\end{center}
-
-
 \end{frame}
 
 \begin{frame}
-\frametitle{Main Point 2}
-\framesubtitle{Explain the Significance of the Results}
-Pause, and explain the relationships between the formal theorems that you have just presented and the informal description that you gave in the Introduction. Make it clear to the audience that the results do live up to the advance publicity. If the statements of the theorems are very technical then this may take some time. It is time well-spent.
-
+    \frametitle{Algorithm-2}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.25]{figures/IEEE-2.png}
+    \end{figure}
 \end{frame}
 
-\subsection{Main Point 3}
 \begin{frame}
-\frametitle{Main Point 3}
-\framesubtitle{Sketch a Proof of the Crucial Results}
-The emphasis is on the word ``sketch''. Give a very high-level description of the proofs, emphasizing the proof structure and the proof techniques used. If the proofs have no structure (in which case it may be assumed that you are not the author of the paper), then you must impose one on them. Gloss over the technical details. It is a good idea to point them out but not to explore them.
+\frametitle{States}
+
+
+\begin{itemize}
+	\item Waiting for Children
+	\item Sending Parent Request
+	\item Parent Contention(only for last 2 nodes)
+\end{itemize}
+
+
+
 \end{frame}
+
+\subsection{Lemmas/Restrictions}
+\begin{frame}
+	\begin{itemize}
+		\item We know that for a graph to be fully connected and acyclic, it must have exactly N-1 connections
+		\item If a graph has no non leaf nodes it means that it has at least 2N edges which will surely make it cyclic thus contradiction
+		\item Since it is not cyclic some of the nodes has to be leafs at every iteraion.
+		\item Only leafs sends request to possible parents.
+		\item When a node chooses its parent(it has to be acknowledged) it is eliminated from this process.
+	\end{itemize}
+\end{frame}
+
 
 
 \section{Experimental results/Proofs}
 
-\subsection{Main Result 1}
+\subsection{Proof}
 \begin{frame}
-\frametitle{Main Result 1}
-\framesubtitle{}
-Choose \textbf{just the key results}. They should be important, non-trivial, should give the flavour of the rest of the technical details and should be presentable in a relatively short period of time. Use figures instead of tables instead of text.
-
-Better to present 10\% the entire audience gets than 90\% nobody gets
+	After every elimination there are 3 cases:
+	\begin{itemize}
+		\item Either there are at least one previous leaf remaining(in this case at least one of these chooses its parents)
+		\item There is no previous leaf remaining but since these leaf nodes are removed from our calculation new leafs are created
+		\item Parent chosen process ends
+	\end{itemize}
+because of above reasons this algorithm is correct. Since for every node to choose its parent. There should be exactly one of its neighboors that has not chosen it as parent. Which means up to root contention the subtrees will merge and at last point one of the roots of these subtrees will become the leader.
 \end{frame}
 
-
-\subsection{Main Result 2}
+\subsection{Changes to original approach}
 \begin{frame}
-\frametitle{Main Result 2}
-\framesubtitle{Try a subtitle}
-\begin{itemize}
-\item Make sure your notation is clear and consistent throughout the talk. Prepare a slide that explains the notation in detail, in case that is needed or if somebody asks.
-\item Always label all of your axes on graphs; use short but helpful captions on figures and tables. It is also very useful to have an arrow on the side which clearly shows which direction is considered better (e.g., "up is better").
-\item If you have experimental results, make sure you clearly present the experimental paradigm you used, and the details of your methods, including the number of trials, the specific analysis tools you applied, significance testing, etc.
-\item The talk should contain at least a brief discussion of the limitations and weaknesses of the presented approach or results, in addition to their strengths. This, however, should be done in an objective manner -- don't enthusiastically put down your own work.
-\end{itemize}
+	In addition to above, for contention instead of using randomized waits I chose to appoint node with higher number as root. To do this:
+	\begin{itemize}
+		\item In case the current node having lower id. It first appoints the neighboor as its root then sends parentage request. In the case of receiveng a root request from said node, it resends root request to that neighboor forcing parentship until acknowledgement received. 
+		\item n case the current node having higher id. It sends parentage request. In the case of receiveng a root request from said node instead of acknowledgement, immediately accepts.
+	\end{itemize}
 \end{frame}
 
-
-\subsection{Main Result 3}
+\subsection{Proof}
 \begin{frame}
-\frametitle{Main Result 3}
-\framesubtitle{}
-\begin{itemize}
-\item If time allows, the results should be compared to the most related work in the field. You should at least prepare one slide with a summary of the related work, even if you do not get a chance to discuss it. This will be helpful if someone asks about it, and will demonstrate your mastery of the material.
-\item Spell check again.
-\item Give for each of the x-axis, y-axis, and z-axis
-\item Label, unit, scale (if log scale)
-\item Give the legend
-\item Explain all symbols
-\item Take an example to illustrate a specific point in the figure
-\end{itemize}
+	\begin{itemize}
+		\item In case of contention(last 2 nodes) since lower id forces parentage, higher id will receive parentage request at some point and acknowledge it ending the cycle.
+		\item In case of no contention even if it is lower or higher id since the other node doesn't send a request back it will acknowledge the parentage request.
+	\end{itemize}
 \end{frame}
 
 
@@ -276,9 +247,11 @@ An acceptable way to do this is to say “Thank-you. Are there any questions?”
 
 \section*{References}
 \begin{frame}{References}
-\tiny
-\bibliographystyle{IEEEtran}
-\bibliography{refs}
+    \tiny
+    \begin{itemize}
+        \item[\textbullet] \textbf{IEEE Standard for a High Performance Serial Bus}, IEEE Std 1394-1995, pp. 326-327, Aug. 1996. doi: 10.1109/IEEESTD.1996.81049.
+        \item[\textbullet] M. Devillers, D. Griffioen, J. Romijn, et al., "Verification of a Leader Election Protocol: Formal Methods Applied to IEEE 1394," Formal Methods in System Design, vol. 16, pp. 307–320, 2000.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{How to prepare the talk?}
