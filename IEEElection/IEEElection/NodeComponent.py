@@ -26,13 +26,13 @@ class NodeComponentModel(BaseComponentModel):
         self.send_up(eventobj)
 
         # if not self.componentinstancenumber:
-        #     self.send_message(
+        #     event = self.create_message_event(
         #         EventTypes.MFRT,
         #         1,
         #         "ERSEL",
         #         nexthop=1,
-                
         #     )
+        #     self.send_down(event)
 
     
 

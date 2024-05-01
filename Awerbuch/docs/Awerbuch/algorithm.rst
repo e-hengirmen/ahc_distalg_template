@@ -18,7 +18,9 @@ Distributed Algorithm: |Awerbuch|
 Alpha
 ---------------------------------
 
+
 An example distributed algorithm for local synchronization is presented in  :ref:`Algorithm <AlphaAlgorithmLabel>`.
+
 
 .. _AlphaAlgorithmLabel:
 
