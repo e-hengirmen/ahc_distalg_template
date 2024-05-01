@@ -11,43 +11,12 @@ from adhoccomputing.Networking.NetworkLayer.GenericNetworkLayer import GenericNe
 from adhoccomputing.Networking.ApplicationLayer.GenericApplicationLayer import GenericApplicationLayer
 from adhoccomputing.Networking.LogicalChannels.GenericChannel import GenericChannel
 
-from IEEElectionComponent import IEEElectionComponent
+# from AlgorithmComponent import AlgorithmComponentModel
+from NodeComponent import NodeComponentModel as NodeModel
 
 number_mesg = 0
 topo = Topology()
 
-
-class AdHocNode(GenericModel):
-
-    def on_init(self, eventobj: Event):
-        print(f"Initializing {self.componentname}.{self.componentinstancenumber}")
-
-    def on_message_from_top(self, eventobj: Event):
-        self.send_down(Event(self, EventTypes.MFRT, eventobj.eventcontent))
-
-    def on_message_from_bottom(self, eventobj: Event):
-        self.send_up(Event(self, EventTypes.MFRB, eventobj.eventcontent))
-
-    def __init__(self, componentname, componentid, topology=None):
-        super().__init__(componentname, componentid, topology=topo)
-        self.components = []
-        # SUBCOMPONENTS
-        self.appllayer = GenericApplicationLayer("ApplicationLayer", componentid, topology=topology)
-        self.netlayer = GenericNetworkLayer("NetworkLayer", componentid, topology=topology)
-        self.linklayer = GenericLinkLayer("LinkLayer", componentid)
-        self.components.append(self.appllayer)
-        self.components.append(self.netlayer)
-        self.components.append(self.linklayer)
-
-        # CONNECTIONS AMONG SUBCOMPONENTS
-        self.appllayer.D(self.netlayer)
-        self.netlayer.U(self.appllayer)
-        self.netlayer.D(self.linklayer)
-        self.linklayer.U(self.netlayer)
-
-        # Connect the bottom component to the composite component....
-        self.linklayer.D(self)
-        self.U(self.linklayer)
 
 
 class Channel(GenericChannel):
@@ -83,9 +52,9 @@ def main():
     nx.draw(G, with_labels=True, font_weight='bold')
     plt.draw()
 
-    print("Starting DSR test")
+    print("Starting test")
     # topo is defined as a global variable
-    topo.construct_from_graph(G, IEEElectionComponent, Channel)
+    topo.construct_from_graph(G, NodeModel, Channel)
     setAHCLogLevel(logging.DEBUG)
     topo.start()
 
