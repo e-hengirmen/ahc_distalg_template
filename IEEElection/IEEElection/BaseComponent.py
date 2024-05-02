@@ -16,35 +16,58 @@ class BaseComponentModel(GenericModel):
         self.component_hash = self.componentname, self.componentinstancenumber
 
     def on_init(self, eventobj: Event):
-        logger.debug(f"INIT - {self.component_hash}")
+        self.debug_message(f"INIT - {self.component_hash}")
     
     def on_message_from_top(self, eventobj: Event):
-        logger.debug(self.on_message_logger(eventobj, "FROM TOP:"))
+        # self.debug_message(self.on_message_logger(eventobj, "FROM TOP:"))
+        pass
     
     def on_message_from_bottom(self, eventobj: Event):
-        logger.debug(self.on_message_logger(eventobj, "FROM BOTTOM:"))
+        # self.debug_message(self.on_message_logger(eventobj, "FROM BOTTOM:"))
+        pass
 
     def on_message_from_peer(self, eventobj: Event):
-        logger.debug(self.on_message_logger(eventobj, "FROM PEER:"))
+        # self.debug_message(self.on_message_logger(eventobj, "FROM PEER:"))
+        pass
     
-    def on_message_logger(self, eventobj: Event, pretext, add_content = True):
-        msg = pretext + f" {self.component_hash} <- {eventobj.eventsource_componentname,eventobj.eventsource_componentinstancenumber}"
+    def on_message_logger(self, eventobj: Event, pretext, add_content = False):
+        msg = pretext + f" MSG FROM: {eventobj.eventsource_componentname,eventobj.eventsource_componentinstancenumber}"
         if add_content:
-            msg += f", eventcontent={eventobj.eventcontent}"
+            msg += f", eventcontent:{eventobj.eventcontent}"
         msg += "\n"
         return msg
+    
+    def debug_message(self, msg):
+        if self.componentinstancenumber==1:
+            print(str(self.component_hash) + ": " + str(msg))
+            # logger.info(str(self.component_hash) + ": " + str(msg))
 
 
     def create_message_event(
-            self,
+        self,
+        messagetype,
+        messageto,
+        messagecontent,
+        nexthop=float('inf'),
+    ):
+        message = GenericMessage(
+            GenericMessageHeader(messagetype, messagefrom=self.componentinstancenumber, messageto=messageto, nexthop=nexthop),
+            GenericMessagePayload(messagecontent),
+        )
+        event = Event(self, messagetype, message, eventsource_componentinstancenumber=self.componentinstancenumber)
+        return event
+
+    def send_message_event(
+        self,
+        messagetype,
+        messageto,
+        messagecontent,
+        nexthop=float('inf'),
+    ):
+        event = self.create_message_event(
             messagetype,
             messageto,
             messagecontent,
-            nexthop=float('inf'),
-        ):
-        message = GenericMessage(
-            GenericMessageHeader(messagetype, self.componentinstancenumber, messageto, nexthop),
-            GenericMessagePayload(messagecontent),
+            nexthop,
         )
-        event = Event(self, EventTypes.MFRT, message)
-        return event
+        self.send_down(event)

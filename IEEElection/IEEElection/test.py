@@ -11,17 +11,12 @@ from adhoccomputing.Networking.NetworkLayer.GenericNetworkLayer import GenericNe
 from adhoccomputing.Networking.ApplicationLayer.GenericApplicationLayer import GenericApplicationLayer
 from adhoccomputing.Networking.LogicalChannels.GenericChannel import GenericChannel
 
-# from AlgorithmComponent import AlgorithmComponentModel
-from NodeComponent import NodeComponentModel as NodeModel
+from AlgorithmComponent import AlgorithmComponentModel as NodeModel, ChannelComponentModel
+# from NodeComponent import NodeComponentModel as NodeModel
 
 number_mesg = 0
 topo = Topology()
 
-
-
-class Channel(GenericChannel):
-    def on_init(self, eventobj: Event):
-        pass
 
 
 def main():
@@ -45,8 +40,10 @@ def main():
     G.add_node(0)
     G.add_node(1)
     G.add_node(2)
+    G.add_node(3)
     G.add_edge(0, 1)
     G.add_edge(1, 2)
+    G.add_edge(1, 3)
 
     # G = nx.random_geometric_graph(50, 0.5)
     nx.draw(G, with_labels=True, font_weight='bold')
@@ -54,12 +51,12 @@ def main():
 
     print("Starting test")
     # topo is defined as a global variable
-    topo.construct_from_graph(G, NodeModel, Channel)
-    setAHCLogLevel(logging.DEBUG)
+    topo.construct_from_graph(G, NodeModel, ChannelComponentModel)
+    setAHCLogLevel(logging.INFO)
     topo.start()
 
     # plt.show()
-    sleep(0.15)
+    sleep(3)
 
 
 if __name__ == "__main__":
