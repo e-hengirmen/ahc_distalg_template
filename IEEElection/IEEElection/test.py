@@ -40,10 +40,10 @@ def main():
     G.add_node(0)
     G.add_node(1)
     G.add_node(2)
-    G.add_node(3)
+    # G.add_node(3)
     G.add_edge(0, 1)
     G.add_edge(1, 2)
-    G.add_edge(1, 3)
+    # G.add_edge(1, 3)
 
     # G = nx.random_geometric_graph(50, 0.5)
     nx.draw(G, with_labels=True, font_weight='bold')
@@ -56,7 +56,7 @@ def main():
     topo.start()
 
     # plt.show()
-    sleep(3)
+    sleep(0.15)
 
 
 if __name__ == "__main__":

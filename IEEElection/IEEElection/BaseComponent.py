@@ -1,3 +1,5 @@
+"""A base class to be used for our nodes later on with additional features of easier logging and message sending ease.
+"""
 import queue
 import logging
 
@@ -11,6 +13,9 @@ logger = logging.getLogger("AHC")
 
 
 class BaseComponentModel(GenericModel):
+    """A base class to be used for our nodes later on with additional features of easier logging and message sending ease.
+    """
+    
     def __init__(self, component_name, componentinstancenumber, topology=None):
         super().__init__(component_name, componentinstancenumber, topology=topology)
         self.component_hash = self.componentname, self.componentinstancenumber
@@ -38,9 +43,9 @@ class BaseComponentModel(GenericModel):
         return msg
     
     def debug_message(self, msg):
-        if self.componentinstancenumber==1:
-            print(str(self.component_hash) + ": " + str(msg))
-            # logger.info(str(self.component_hash) + ": " + str(msg))
+        # if self.componentinstancenumber==1:
+        #     print(str(self.component_hash) + ": " + str(msg))
+        logger.info(str(self.component_hash) + ": " + str(msg))
 
 
     def create_message_event(
@@ -70,4 +75,5 @@ class BaseComponentModel(GenericModel):
             messagecontent,
             nexthop,
         )
+        self.debug_message(f"SENDING to {messageto}: {messagecontent} {self.can_be_parent_set}")
         self.send_down(event)

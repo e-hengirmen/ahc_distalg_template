@@ -5,6 +5,7 @@ Code Documentation
    :toctree: generated
    :recursive:
 
-   Snapshot.Snapshot
    Snapshot.ChandyLamportSnapshot
    Snapshot.LaiYangSnapshot
+   IEEElection.AlgorithmComponent
+   IEEElection.BaseComponent

@@ -1,3 +1,8 @@
+"""
+IEEE-1394 election implementation
+"""
+
+
 import queue
 import logging
 from time import sleep
@@ -16,7 +21,7 @@ logger = logging.getLogger("AHC")
 
 
 class ThreadSafeSet:
-    """A thread-safe set implementation using a mutex.
+    """A thread-safe set implementation using a mutex.(not used)
     """
 
     def __init__(self, tmplist = [], lock=None):
@@ -79,6 +84,8 @@ class ThreadSafeSet:
 
 
 class ChannelComponentModel(GenericChannel):
+    """Channel component model to send to only 1 peer
+    """
     def on_init(self, eventobj: Event):
         # print(f'\n\n\nCONNECTORS are:{[(i.componentname, i.componentinstancenumber) for i in self.connectors[ConnectorTypes.PEER]]}\n\n\n')
         pass
@@ -100,6 +107,11 @@ class ChannelComponentModel(GenericChannel):
         self.send_to_specific_peer(eventobj)
 
     def send_to_specific_peer(self, event: Event):
+        """The function that finds the corresponding channelpipe and sends its message to that node
+
+        Args:
+            event (Event): _description_
+        """
         messagefrom = event.eventcontent.header.messagefrom
         messageto = event.eventcontent.header.messageto
         try:
@@ -112,6 +124,7 @@ class ChannelComponentModel(GenericChannel):
                     # counter += 1
                     # print(f'channel sendto: {messagefrom} -> {messageto}, {p.componentinstancenumber}')
                     p.trigger_event(event)
+                    break
             # print("\n\n\nsend to", counter, f'{messagefrom}-{messageto}', f'{messageto}-{messagefrom}\t{event.eventcontent.header}, {event.eventcontent.payload.messagepayload}',"\n\n\n")
         except Exception as e:
             logger.error(f"Cannot send message to PEER Connector {self.componentname}-{self.componentinstancenumber} {str(event)} {e}")
@@ -139,6 +152,12 @@ class ChannelComponentModel(GenericChannel):
 
 class AlgorithmComponentModel(BaseComponentModel):
     def on_init(self, eventobj: Event):
+        """On init function that initiates neccessary lock and variables
+        also calls u_are_my_father_anakin(for those who only has one neighboor left marks them as their parent 
+
+        Args:
+            eventobj (Event): _description_
+        """
         super().on_init(eventobj)
         self.neighbour_set = set(self.topology.get_neighbors(self.componentinstancenumber))
         self.lock = threading.Lock()
@@ -160,9 +179,8 @@ class AlgorithmComponentModel(BaseComponentModel):
         """Sends a parent request to the only neighbour node(lets call that node Anakin).
         There can be multiple neighboors but this is the only node that hasn't sent a parent request to our node.
         """
-        self.debug_message('before sending u are my father')
+        # self.debug_message('before entering lock 1')
         with self.lock:
-            self.debug_message('sending u are my father')
             if len(self.can_be_parent_set) == 1:
                 father_to_be = self.can_be_parent_set.pop()
                 self.can_be_parent_set.add(father_to_be)
@@ -175,22 +193,37 @@ class AlgorithmComponentModel(BaseComponentModel):
                     EventTypes.MFRT,
                     father_to_be,
                     "Father?",
-                    nexthop=father_to_be,
+                    # nexthop=father_to_be,
                 )
-            else:
-                return
+        # self.debug_message('exited lock 1')
             
     def on_message_from_bottom(self, eventobj: Event):
+        """ By looking at the message (looking for parent request or acknowledgement calls the neccessary function)
+
+        Args:
+            eventobj (Event): _description_
+
+        Raises:
+            Exception: _description_
+        """
         super().on_message_from_bottom(eventobj)
         self.debug_message(f"RECEIVED from {eventobj.eventsource_componentinstancenumber}: {eventobj.eventcontent.payload.messagepayload} {self.can_be_parent_set}")
         if eventobj.eventcontent.payload.messagepayload == "Father?":
             self.am_i_ready_to_be_a_father(eventobj)
-        elif eventobj.eventcontent.payload.messagepayload == "ACK":
+        elif eventobj.eventcontent.payload.messagepayload == "ACKNOWLEDGEMENT_RECEIVED":
             self.he_was_my_father(eventobj)
         else:
             raise Exception(f"content '{eventobj.eventcontent.payload.messagepayload}' was sent")
     
     def am_i_ready_to_be_a_father(self, eventobj: Event):
+        """Sends ACK if there is no contention.
+        Otherwise sends ack if having higher id
+        Otherwise sends father request instead forcing the other party to be the fater
+
+        Args:
+            eventobj (Event): _description_
+        """
+        # self.debug_message('before entering lock 2')
         with self.lock:
             neighboor = eventobj.eventsource_componentinstancenumber
             message = None
@@ -198,37 +231,49 @@ class AlgorithmComponentModel(BaseComponentModel):
             if self.parent and self.parent == neighboor:
                 message = "Father?" 
             elif not (neighboor in self.can_be_parent_set):
-                message = "ACK"
+                message = "ACKNOWLEDGEMENT_RECEIVED"
             elif len(self.can_be_parent_set) > 1:
                 self.can_be_parent_set.remove(neighboor)
-                message = "ACK"
+                message = "ACKNOWLEDGEMENT_RECEIVED"
             elif len(self.can_be_parent_set) == 1:     # root contention 
                 if self.componentinstancenumber > neighboor:
                     print('here4', self.componentinstancenumber)
                     self.can_be_parent_set.remove(neighboor)
-                    message = "ACK"
+                    message = "ACKNOWLEDGEMENT_RECEIVED"
                     self.leader = True
                 else:
-                    print('here5')
                     message = "Father?"
-            if message == "Father?":
-                self.u_are_my_father_anakin()
-            elif message == "ACK":
-                self.debug_message(f"I wanna be your father {neighboor} {self.can_be_parent_set}")
-                self.send_message_event(
-                    EventTypes.MFRT,
-                    neighboor,
-                    "ACK",
-                    nexthop=neighboor,
-                )
+        # self.debug_message('exited lock 2')
+        
+        if message == "Father?":
+            self.u_are_my_father_anakin()
+        elif message == "ACKNOWLEDGEMENT_RECEIVED":
+            self.debug_message(f"I wanna be your father {neighboor} {self.can_be_parent_set}")
+            self.send_message_event(
+                EventTypes.MFRT,
+                neighboor,
+                "ACKNOWLEDGEMENT_RECEIVED",
+                # nexthop=neighboor,
+            )
         if self.leader == True:
             print(f"(election over) Anakin's gone I am what remains {self.can_be_parent_set}")
-        elif message == "ACK":
+        elif message == "ACKNOWLEDGEMENT_RECEIVED":
             self.u_are_my_father_anakin()
 
     def he_was_my_father(self, eventobj: Event):
+        """Marking acked node as father
+
+        Args:
+            eventobj (Event): _description_
+
+        Raises:
+            Exception: _description_
+        """
         neighboor = eventobj.eventsource_componentinstancenumber
+        if self.parent and self.parent != eventobj.eventsource_componentinstancenumber:
+            raise Exception("multiple parent error")
         self.parent = eventobj.eventsource_componentinstancenumber
+        # self.debug_message('before entering lock 3')
         with self.lock:
             if not self.ended:
                 try:
@@ -236,6 +281,7 @@ class AlgorithmComponentModel(BaseComponentModel):
                 except:
                     pass
                 self.ended = True
+        # self.debug_message('exited lock 3')
         self.debug_message(f"{neighboor} is my father {self.can_be_parent_set}")
 
     
