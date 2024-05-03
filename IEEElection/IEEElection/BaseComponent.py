@@ -12,7 +12,7 @@ from threading import Thread
 logger = logging.getLogger("AHC")
 
 
-class BaseComponentModel(GenericModel):
+class BaseComponent(GenericModel):
     """A base class to be used for our nodes later on with additional features of easier logging and message sending ease.
     """
     

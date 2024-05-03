@@ -15,7 +15,7 @@ from adhoccomputing.Networking.LogicalChannels.GenericChannel import GenericChan
 
 import threading
 
-from BaseComponent import BaseComponentModel
+from BaseComponent import BaseComponent
 
 logger = logging.getLogger("AHC")
 
@@ -150,7 +150,7 @@ class ChannelComponentModel(GenericChannel):
     #     self.send_up_from_channel(myevent, loopback=False)
 
 
-class AlgorithmComponentModel(BaseComponentModel):
+class AlgorithmComponent(BaseComponent):
     def on_init(self, eventobj: Event):
         """On init function that initiates neccessary lock and variables
         also calls u_are_my_father_anakin(for those who only has one neighboor left marks them as their parent 
