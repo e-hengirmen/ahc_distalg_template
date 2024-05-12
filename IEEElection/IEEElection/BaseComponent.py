@@ -15,14 +15,15 @@ logger = logging.getLogger("AHC")
 class BaseComponent(GenericModel):
     """A base class to be used for our nodes later on with additional features of easier logging and message sending ease.
     """
-    
+
+    msg_count = 0
     def __init__(self, component_name, componentinstancenumber, topology=None):
         super().__init__(component_name, componentinstancenumber, topology=topology)
         self.component_hash = self.componentname, self.componentinstancenumber
 
     def on_init(self, eventobj: Event):
         self.debug_message(f"INIT - {self.component_hash}")
-    
+
     def on_message_from_top(self, eventobj: Event):
         # self.debug_message(self.on_message_logger(eventobj, "FROM TOP:"))
         pass
@@ -75,5 +76,6 @@ class BaseComponent(GenericModel):
             messagecontent,
             nexthop,
         )
-        self.debug_message(f"SENDING to {messageto}: {messagecontent} {self.can_be_parent_set}")
+        self.msg_count += 1
+        self.debug_message(f"SENDING to {messageto}: {messagecontent}")
         self.send_down(event)

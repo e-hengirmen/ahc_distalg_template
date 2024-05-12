@@ -2,7 +2,7 @@
 IEEE-1394 election implementation
 """
 
-
+from time import time
 import queue
 import logging
 from time import sleep
@@ -90,44 +90,22 @@ class ChannelComponentModel(GenericChannel):
         # print(f'\n\n\nCONNECTORS are:{[(i.componentname, i.componentinstancenumber) for i in self.connectors[ConnectorTypes.PEER]]}\n\n\n')
         pass
         
-    def on_message_from_peer(self, eventobj: Event):
-        messagefrom = eventobj.eventcontent.header.messagefrom
-        messageto = eventobj.eventcontent.header.messageto
-        # print(f'channel received: {messagefrom} -> {messageto}')
-        logger.debug(f"{self.componentname}-{self.componentinstancenumber} on_deliver_to_component {self.componentname}")
-        myevent = Event(self, EventTypes.MFRB,
-                        eventobj.eventcontent, fromchannel=self.componentinstancenumber,
-                        eventid=eventobj.eventid, eventsource_componentname=eventobj.eventsource_componentname, eventsource_componentinstancenumber=eventobj.eventsource_componentinstancenumber)
-        myevent.eventsource=None
-        self.send_up_from_channel(myevent, loopback=False)
+    # def on_message_from_peer(self, eventobj: Event):
+    #     messagefrom = eventobj.eventcontent.header.messagefrom
+    #     messageto = eventobj.eventcontent.header.messageto
+    #     # print(f'channel received: {messagefrom} -> {messageto}')
+    #     logger.debug(f"{self.componentname}-{self.componentinstancenumber} on_deliver_to_component {self.componentname}")
+    #     myevent = Event(self, EventTypes.MFRB,
+    #                     eventobj.eventcontent, fromchannel=self.componentinstancenumber,
+    #                     eventid=eventobj.eventid, eventsource_componentname=eventobj.eventsource_componentname, eventsource_componentinstancenumber=eventobj.eventsource_componentinstancenumber)
+    #     myevent.eventsource=None
+    #     self.send_up_from_channel(myevent, loopback=False)
 
-    def on_message_from_top(self, eventobj: Event):
-        eventobj.event = EventTypes.MFRP
-        eventobj.fromchannel = self.componentinstancenumber
-        self.send_to_specific_peer(eventobj)
+    # def on_message_from_top(self, eventobj: Event):
+    #     eventobj.event = EventTypes.MFRP
+    #     eventobj.fromchannel = self.componentinstancenumber
+    #     self.send_to_specific_peer(eventobj)
 
-    def send_to_specific_peer(self, event: Event):
-        """The function that finds the corresponding channelpipe and sends its message to that node
-
-        Args:
-            event (Event): _description_
-        """
-        messagefrom = event.eventcontent.header.messagefrom
-        messageto = event.eventcontent.header.messageto
-        try:
-            # counter = 0
-            for p in self.connectors[ConnectorTypes.PEER]:
-                if (
-                    p.componentinstancenumber == f'{messagefrom}-{messageto}' or
-                    p.componentinstancenumber == f'{messageto}-{messagefrom}'
-                ):
-                    # counter += 1
-                    # print(f'channel sendto: {messagefrom} -> {messageto}, {p.componentinstancenumber}')
-                    p.trigger_event(event)
-                    break
-            # print("\n\n\nsend to", counter, f'{messagefrom}-{messageto}', f'{messageto}-{messagefrom}\t{event.eventcontent.header}, {event.eventcontent.payload.messagepayload}',"\n\n\n")
-        except Exception as e:
-            logger.error(f"Cannot send message to PEER Connector {self.componentname}-{self.componentinstancenumber} {str(event)} {e}")
         # self.eventhandlers[IEEE1394_EventTypes.BE_MY_FATHER_ANAKIN] = self.parentage_request
         # self.eventhandlers[IEEE1394_EventTypes.I_AM_YOUR_FATHER_LUKE] = self.father_acknowledgement
         # logger.debug(f"connectors: {self.componentinstancenumber,self.componentname} {[p.componentinstancenumber for p in self.connectors[ConnectorTypes.PEER]]}")
@@ -151,6 +129,7 @@ class ChannelComponentModel(GenericChannel):
 
 
 class AlgorithmComponent(BaseComponent):
+    end_time = -1
     def on_init(self, eventobj: Event):
         """On init function that initiates neccessary lock and variables
         also calls u_are_my_father_anakin(for those who only has one neighboor left marks them as their parent 
@@ -187,8 +166,9 @@ class AlgorithmComponent(BaseComponent):
                 # self.parent = father_to_be
                 if father_to_be > self.componentinstancenumber:
                     self.parent = father_to_be
-
-                self.debug_message(f"Be my father {father_to_be} {self.can_be_parent_set}")
+                    self.can_be_parent_set.pop()
+                # self.debug_message(f"Be my father {father_to_be} {self.can_be_parent_set}")
+                self.debug_message(f"Be my father {father_to_be}")
                 self.send_message_event(
                     EventTypes.MFRT,
                     father_to_be,
@@ -207,13 +187,14 @@ class AlgorithmComponent(BaseComponent):
             Exception: _description_
         """
         super().on_message_from_bottom(eventobj)
-        self.debug_message(f"RECEIVED from {eventobj.eventsource_componentinstancenumber}: {eventobj.eventcontent.payload.messagepayload} {self.can_be_parent_set}")
-        if eventobj.eventcontent.payload.messagepayload == "Father?":
-            self.am_i_ready_to_be_a_father(eventobj)
-        elif eventobj.eventcontent.payload.messagepayload == "ACKNOWLEDGEMENT_RECEIVED":
-            self.he_was_my_father(eventobj)
-        else:
-            raise Exception(f"content '{eventobj.eventcontent.payload.messagepayload}' was sent")
+        if self.componentinstancenumber == eventobj.eventcontent.header.messageto:
+            self.debug_message(f"RECEIVED from {eventobj.eventsource_componentinstancenumber}: {eventobj.eventcontent.payload.messagepayload}")
+            if eventobj.eventcontent.payload.messagepayload == "Father?":
+                self.am_i_ready_to_be_a_father(eventobj)
+            elif eventobj.eventcontent.payload.messagepayload == "ACKNOWLEDGEMENT_RECEIVED":
+                self.he_was_my_father(eventobj)
+            else:
+                raise Exception(f"content '{eventobj.eventcontent.payload.messagepayload}' was sent")
     
     def am_i_ready_to_be_a_father(self, eventobj: Event):
         """Sends ACK if there is no contention.
@@ -237,7 +218,7 @@ class AlgorithmComponent(BaseComponent):
                 message = "ACKNOWLEDGEMENT_RECEIVED"
             elif len(self.can_be_parent_set) == 1:     # root contention 
                 if self.componentinstancenumber > neighboor:
-                    print('here4', self.componentinstancenumber)
+                    # print('here4', self.componentinstancenumber)
                     self.can_be_parent_set.remove(neighboor)
                     message = "ACKNOWLEDGEMENT_RECEIVED"
                     self.leader = True
@@ -248,7 +229,7 @@ class AlgorithmComponent(BaseComponent):
         if message == "Father?":
             self.u_are_my_father_anakin()
         elif message == "ACKNOWLEDGEMENT_RECEIVED":
-            self.debug_message(f"I wanna be your father {neighboor} {self.can_be_parent_set}")
+            self.debug_message(f"I wanna be your father {neighboor}")
             self.send_message_event(
                 EventTypes.MFRT,
                 neighboor,
@@ -256,7 +237,9 @@ class AlgorithmComponent(BaseComponent):
                 # nexthop=neighboor,
             )
         if self.leader == True:
-            print(f"(election over) Anakin's gone I am what remains {self.can_be_parent_set}")
+            print(f"(election over) Anakin's gone I am what remains {self.componentinstancenumber}")
+            AlgorithmComponent.end_time = time()
+
         elif message == "ACKNOWLEDGEMENT_RECEIVED":
             self.u_are_my_father_anakin()
 

@@ -3,6 +3,6 @@
 Conclusion
 ==========
 
-In general a short summarizing paragraph will do, and under no circumstances should the paragraph simply repeat material from the Abstract or Introduction. In some cases it's possible to now make the original claims more concrete, e.g., by referring to quantitative performance results [Widom2006].
-
-The conclusion is where you build upon your discussion and try to refer your findings to other research and to the world at large. In a short research paper, it may be a paragraph or two, or practically non-existent. In a dissertation, it may well be the most important part of the entire paper - not only does it describe the results and discussion in detail, it emphasizes the importance of the results in the field, and ties it in with the previous research. Some research papers require a recommendations section, postulating that further directions of the research, as well as highlighting how any flaws affected the results. In this case, you should suggest any improvements that could be made to the research design [Shuttleworth2016].
+- The Leader Election protocol plays a critical role in IEEE 1394 networks by ensuring seamless communication and device coordination after a bus reset. This paper investigated the implementation of the IEEElection algorithm on the AHCv2 platform.
+- The implementation exhibited linear scaling with the number of nodes which showed potential limitations of the simulation environment.
+- A deeper analysis with a real network or a build in simulated time analysis added version of AHC platform could help us improve on this and other problems with same nature.
