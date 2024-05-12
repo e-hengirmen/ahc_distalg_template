@@ -5,6 +5,8 @@ Code Documentation
    :toctree: generated
    :recursive:
 
-   Snapshot.Snapshot
-   Snapshot.ChandyLamportSnapshot
-   Snapshot.LaiYangSnapshot
+   Awerbuch.BaseComponent
+   Awerbuch.AlgorithmComponentAlpha
+   Awerbuch.AlgorithmComponentBeta
+   Awerbuch.AlgorithmComponentGamma
+   

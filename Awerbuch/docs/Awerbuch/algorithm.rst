@@ -11,6 +11,8 @@ Background and Related Work
 The 1985 paper [Awerbuch1985]_ proposes the method for alpha beta gamma synchronizers(without naming them as alpha beta gamma) and analyzes the trade-offs between them in this paper.
 So in essence its a paper that introduces simple methodologies for designing efficient distributed algorithms in asynchronous networks.
 
+.. [Awerbuch1985] Awerbuch, Baruch. "Complexity of network synchronization." Journal of the ACM (JACM) 32.4 (1985): 804-823.
+
 Distributed Algorithm: |Awerbuch| 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
